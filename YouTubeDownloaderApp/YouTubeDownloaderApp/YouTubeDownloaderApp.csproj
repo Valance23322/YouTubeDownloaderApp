@@ -62,7 +62,6 @@
     <Reference Include="System.Numerics.Vectors" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FragmentResultListener.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="MainFragment.cs" />
     <Compile Include="DownloadOptionsFragment.cs" />
