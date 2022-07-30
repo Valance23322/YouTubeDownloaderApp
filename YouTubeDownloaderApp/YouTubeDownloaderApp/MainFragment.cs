@@ -31,14 +31,26 @@ namespace YouTubeDownloaderApp
             var view = inflater.Inflate(Resource.Layout.MainFragment, container, false);
 
             DownloadBtn = view.FindViewById<Button>(Resource.Id.DownloadBtn);
-            DownloadBtn.Click += DownloadVideo;
+            DownloadBtn.Click += ShowDownloadOptions;
+
+            ParentFragmentManager.SetFragmentResultListener("DownloadOptions", ViewLifecycleOwner, new FragmentResultListener(OnFinishDownloadOptionsDialog));
 
             return view;
         }
 
-        protected virtual void DownloadVideo(object sender, EventArgs e)
+        protected virtual void ShowDownloadOptions(object sender, EventArgs e)
         {
-            
+            var DownloadOptionsFragment = new DownloadOptions();
+            DownloadOptionsFragment.Show(ParentFragmentManager, "dialog");
+        }
+
+        public void OnFinishDownloadOptionsDialog(Bundle bundle)
+        {
+            List<string> resultList = new List<string>();
+            resultList.Add($"Download Result: {bundle.GetString("DownloadResult")}");
+            resultList.Add($"File Name: {bundle.GetString("FileName")}");
+            resultList.Add($"Save Folder: {bundle.GetString("SaveFolder")}");
+            Console.WriteLine($"\n\n\n\n{string.Join("\n", resultList)}\n\n\n\n");
         }
     }
 }

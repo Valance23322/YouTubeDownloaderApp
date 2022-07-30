@@ -62,8 +62,10 @@
     <Reference Include="System.Numerics.Vectors" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FragmentResultListener.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="MainFragment.cs" />
+    <Compile Include="DownloadOptions.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -118,6 +120,11 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\MainFragment.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\DownloadOptions.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
