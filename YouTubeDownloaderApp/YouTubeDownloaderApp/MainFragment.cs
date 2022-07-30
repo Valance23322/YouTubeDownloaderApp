@@ -30,7 +30,7 @@ namespace YouTubeDownloaderApp
             // Use this to return your custom view for this Fragment
             var view = inflater.Inflate(Resource.Layout.MainFragment, container, false);
 
-            DownloadBtn = (Button)view.FindViewById(Resource.Id.DownloadBtn);
+            DownloadBtn = view.FindViewById<Button>(Resource.Id.DownloadBtn);
             DownloadBtn.Click += DownloadVideo;
 
             return view;
