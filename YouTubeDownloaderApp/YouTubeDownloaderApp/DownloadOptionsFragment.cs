@@ -42,7 +42,6 @@ namespace YouTubeDownloaderApp
             FileNameTxt = view.FindViewById<EditText>(Resource.Id.FileNameTxt);
             SaveFolderTxt = view.FindViewById<EditText>(Resource.Id.SaveFolderTxt);
 
-
             ContinueDownloadBtn.Click += ContinueVideoDownload;
             CancelDownloadBtn.Click += CancelVideoDownload;
 
@@ -52,7 +51,6 @@ namespace YouTubeDownloaderApp
         protected virtual void ContinueVideoDownload(object sender, EventArgs e)
         {
             DownloadAction(FileNameTxt.Text, SaveFolderTxt.Text);
-
             Dismiss();
         }
 

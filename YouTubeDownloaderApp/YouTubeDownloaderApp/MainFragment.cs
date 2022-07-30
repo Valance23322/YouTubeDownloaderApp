@@ -34,7 +34,7 @@ namespace YouTubeDownloaderApp
             DownloadBtn.Click += ShowDownloadOptions;
 
             ParentFragmentManager.SetFragmentResultListener("DownloadOptions", ViewLifecycleOwner, new FragmentResultListener(OnFinishDownloadOptionsDialog));
-
+            SetupDialogAction();
             return view;
         }
 
@@ -45,6 +45,17 @@ namespace YouTubeDownloaderApp
         }
 
         public Action<string, string> DownloadAction { get; set; }
+
+        public virtual void SetupDialogAction()
+        {
+            DownloadAction = ReceiveDownloadParams;
+        }
+
+        public virtual void ReceiveDownloadParams(string fileName, string saveFolder)
+        {
+
+        }
+
 
         public void OnFinishDownloadOptionsDialog(Bundle bundle)
         {
