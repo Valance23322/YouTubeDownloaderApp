@@ -14,6 +14,10 @@ namespace YouTubeDownloaderApp
 {
     public class MainFragment : AndroidX.Fragment.App.Fragment
     {
+
+        public Button DownloadBtn { get; set; }
+
+
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -26,9 +30,15 @@ namespace YouTubeDownloaderApp
             // Use this to return your custom view for this Fragment
             var view = inflater.Inflate(Resource.Layout.MainFragment, container, false);
 
-
+            DownloadBtn = (Button)view.FindViewById(Resource.Id.DownloadBtn);
+            DownloadBtn.Click += DownloadVideo;
 
             return view;
+        }
+
+        protected virtual void DownloadVideo(object sender, EventArgs e)
+        {
+            
         }
     }
 }
