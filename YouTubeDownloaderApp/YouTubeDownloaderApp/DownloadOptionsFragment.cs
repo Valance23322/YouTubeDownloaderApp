@@ -12,12 +12,19 @@ using System.Text;
 
 namespace YouTubeDownloaderApp
 {
-    public class DownloadOptions : AndroidX.Fragment.App.DialogFragment
+    public class DownloadOptionsFragment : AndroidX.Fragment.App.DialogFragment
     {
         public Button ContinueDownloadBtn { get; set; }
         public Button CancelDownloadBtn { get; set; }
         public EditText FileNameTxt { get; set; }
         public EditText SaveFolderTxt { get; set; }
+
+        public Action<string, string> DownloadAction { get; set; }
+
+        public DownloadOptionsFragment(Action<string, string> DownloadAction) : base()
+        {
+            this.DownloadAction = DownloadAction;
+        }
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -44,11 +51,8 @@ namespace YouTubeDownloaderApp
 
         protected virtual void ContinueVideoDownload(object sender, EventArgs e)
         {
-            Bundle result = new Bundle();
-            result.PutString("DownloadResult", "DOWNLOAD TIME!!!!");
-            result.PutString("FileName", FileNameTxt.Text);
-            result.PutString("SaveFolder", SaveFolderTxt.Text);
-            ParentFragmentManager.SetFragmentResult("DownloadOptions", result);
+            DownloadAction(FileNameTxt.Text, SaveFolderTxt.Text);
+
             Dismiss();
         }
 

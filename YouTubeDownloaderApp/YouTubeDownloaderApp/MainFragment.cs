@@ -40,9 +40,11 @@ namespace YouTubeDownloaderApp
 
         protected virtual void ShowDownloadOptions(object sender, EventArgs e)
         {
-            var DownloadOptionsFragment = new DownloadOptions();
+            var DownloadOptionsFragment = new DownloadOptionsFragment(DownloadAction);
             DownloadOptionsFragment.Show(ParentFragmentManager, "dialog");
         }
+
+        public Action<string, string> DownloadAction { get; set; }
 
         public void OnFinishDownloadOptionsDialog(Bundle bundle)
         {
