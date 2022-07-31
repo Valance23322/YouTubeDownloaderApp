@@ -56,14 +56,8 @@ namespace YouTubeDownloaderApp
 
 
             UrlInputEditText = view.FindViewById<EditText>(Resource.Id.URLBox);
-            UrlInputEditText.KeyPress += (object sender, View.KeyEventArgs keyPress) =>
-            {
-                keyPress.Handled = false;
-                if (keyPress.Event.Action == KeyEventActions.Down && keyPress.KeyCode == Keycode.Enter)
-                {
-                    Toast.MakeText(this.Context, "That's a URL!", ToastLength.Short).Show();
-                }
-            };
+            UrlInputEditText.SetHint(Resource.String.url_hint_text);
+
 
             return view;
         }
@@ -117,11 +111,11 @@ namespace YouTubeDownloaderApp
             }
         }
 
+        //this is where we would change the call to the different methods for different websites
         public void websiteSelected (object sender, AdapterView.ItemSelectedEventArgs e)
         {
             Spinner websiteSelected = (Spinner)sender;
-            string toast = "You selected a website!";
-            Toast.MakeText(this.Context, toast, ToastLength.Short).Show();
+
         }
 
         public virtual async void ReceiveDownloadParams(string fileName, string path)

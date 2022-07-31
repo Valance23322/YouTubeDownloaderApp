@@ -10574,6 +10574,9 @@ namespace YouTubeDownloaderApp
 			// aapt resource value: 0x7F100081
 			public const int status_bar_notification_info_overflow = 2131755137;
 			
+			// aapt resource value: 0x7F100082
+			public const int url_hint_text = 2131755138;
+			
 			static String()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
