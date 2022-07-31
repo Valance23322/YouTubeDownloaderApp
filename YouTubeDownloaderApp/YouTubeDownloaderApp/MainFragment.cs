@@ -28,7 +28,7 @@ namespace YouTubeDownloaderApp
 
         public EditText ChannelIDEditText { get; set; }
 
-        public Action<string, string> DownloadAction { get; set; }
+        public Action<string, Android.Net.Uri> DownloadAction { get; set; }
         ActivityResultLauncher ArlStartForResult { get; set; }
 
         public override void OnCreate(Bundle savedInstanceState)
@@ -122,14 +122,10 @@ namespace YouTubeDownloaderApp
 
         }
 
-        public virtual async void ReceiveDownloadParams(string fileName, string path)
+        public virtual async void ReceiveDownloadParams(string fileName, Android.Net.Uri fileUri)
         {
-            //List<string> resultList = new List<string>();
-            //resultList.Add($"File Name: {fileName}");
-            //resultList.Add($"Save Folder: {saveFolder}");
-            //Console.WriteLine($"\n\n\n\n{string.Join("\n", resultList)}\n\n\n\n");
-            string videoURL = this.UrlInputEditText.Text;
-            string errorMessage = await YouTubeDownloaderService.DownloadVideoAsync(fileName, path, videoURL);
+            string videoURL = this.UrlInputEditText.Text;            
+            string errorMessage = await YouTubeDownloaderService.DownloadVideoAsync(Context.ContentResolver, fileName, fileUri, videoURL);
 
             if (!string.IsNullOrWhiteSpace(errorMessage))
             {

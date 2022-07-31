@@ -1,4 +1,6 @@
 ﻿using Android;
+using Android.Content;
+using Android.Provider;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Download;
 using Google.Apis.Services;
@@ -15,14 +17,14 @@ using VideoLibrary;
 
 public class YouTubeDownloaderService
 {
-    public static async Task<string> DownloadVideoAsync(string fileName, string path, string videoURL)
+    public static async Task<string> DownloadVideoAsync(ContentResolver contentResolver, string fileName, Android.Net.Uri fileUri, string videoURL)
     {
         string errorMessage = null;
         var youTube = YouTube.Default; // starting point for YouTube actions
         try
         {
-            var video = youTube.GetVideo(videoURL); // gets a Video object with info about the video
-            File.WriteAllBytes(Path.Combine(path, fileName), video.GetBytes());
+            var video = await youTube.GetVideoAsync(videoURL); // gets a Video object with info about the video
+            errorMessage = await WriteVideoFile(contentResolver, video.GetBytes(), fileName, fileUri);
         }
         catch(ArgumentException ex)
         {
@@ -31,6 +33,25 @@ public class YouTubeDownloaderService
         catch(Exception ex)
         {
             errorMessage = ex.Message;
+        }
+        return errorMessage;
+    }
+
+    public static async Task<string> WriteVideoFile(ContentResolver contentResolver, byte[] video, string fileName, Android.Net.Uri fileUri)
+    {
+        string errorMessage = null;
+        try
+        {
+            using (Stream fileOutputstream = contentResolver.OpenOutputStream(fileUri))
+            {
+                await fileOutputstream.WriteAsync(video, 0, video.Length);
+                fileOutputstream.Flush();
+                fileOutputstream.Close();
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.ToString();
         }
         return errorMessage;
     }
