@@ -57,6 +57,7 @@ namespace YouTubeDownloaderApp
             websiteSelectionSpinner.Adapter = adapter;
 
 
+
             UrlInputEditText = view.FindViewById<EditText>(Resource.Id.URLBox);
             UrlInputEditText.SetHint(Resource.String.url_hint_text);
 
@@ -119,6 +120,14 @@ namespace YouTubeDownloaderApp
         public void websiteSelected (object sender, AdapterView.ItemSelectedEventArgs e)
         {
             Spinner websiteSelected = (Spinner)sender;
+            if (websiteSelectionSpinner.SelectedItem.ToString() == "YouTube")
+            {
+                ChannelIDEditText.Visibility = ViewStates.Visible;
+            }
+            else
+            {
+                ChannelIDEditText.Visibility = ViewStates.Invisible;
+            }
 
         }
 
