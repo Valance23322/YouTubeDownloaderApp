@@ -142,9 +142,9 @@
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResourceAnalysisConfig Include="Resources\values\api_key.xml">
+    <AndroidResource Include="Resources\values\api_key.xml">
       <SubType>Designer</SubType>
-    </AndroidResourceAnalysisConfig>
+    </AndroidResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
