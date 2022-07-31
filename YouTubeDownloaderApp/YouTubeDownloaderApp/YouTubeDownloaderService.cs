@@ -11,12 +11,20 @@ using System.IO;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using VideoLibrary;
 
 public class YouTubeDownloaderService
 {
-    public static async void DownloadVideo(string fileName, string path, string videoURL)
+    public static async void DownloadVideoAsync(string fileName, string path, string videoURL)
     {
+        var youTube = YouTube.Default; // starting point for YouTube actions
+        var video = youTube.GetVideo(videoURL); // gets a Video object with info about the video
+        File.WriteAllBytes($"{path}{fileName}", video.GetBytes());
+    }
 
+    public static async void DownloadPlaylistAsync()
+    {
+        //TODO Use YouTube API -> Channels.List, part = id, then Playlists.List, channelID = ID from Channels.List return, part = snippet, id = id from playlist URL
     }
 
     public virtual async Task PlayListAPIAsync()
