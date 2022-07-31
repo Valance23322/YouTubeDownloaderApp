@@ -369,3 +369,4 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 YouTubeDownloaderApp/YouTubeDownloaderApp/Resources/values/api_key.xml
+YouTubeDownloaderApp/YouTubeDownloaderApp/Resources/values/apiKeys.xml
