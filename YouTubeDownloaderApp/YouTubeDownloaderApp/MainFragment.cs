@@ -26,6 +26,8 @@ namespace YouTubeDownloaderApp
 
         public EditText UrlInputEditText { get; set; }
 
+        public EditText ChannelIDEditText { get; set; }
+
         public Action<string, string> DownloadAction { get; set; }
         ActivityResultLauncher ArlStartForResult { get; set; }
 
@@ -58,6 +60,8 @@ namespace YouTubeDownloaderApp
             UrlInputEditText = view.FindViewById<EditText>(Resource.Id.URLBox);
             UrlInputEditText.SetHint(Resource.String.url_hint_text);
 
+            ChannelIDEditText = view.FindViewById<EditText>(Resource.Id.ChannelID);
+            ChannelIDEditText.SetHint(Resource.String.channel_id_hint_text);
 
             return view;
         }

@@ -4,6 +4,7 @@
   <string name="shared_preferences_save_folder_path">SAVE_FOLDER_PATH</string>
   <string name="action_settings">Settings</string>
   <string name="url_hint_text">Type your URL here</string>
+  <string name="channel_id_hint_text">Enter Channel ID if looking for playlist</string>
   <array name="websiteSelectionOptions">
     <item>Websites</item>
     <item>YouTube</item>
