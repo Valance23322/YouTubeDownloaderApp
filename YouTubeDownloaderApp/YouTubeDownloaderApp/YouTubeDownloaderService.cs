@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 public class YouTubeDownloaderService
 {
-    public YouTubeDownloaderService()
+    public static async void DownloadVideo(string fileName, string path, string videoURL)
     {
 
     }

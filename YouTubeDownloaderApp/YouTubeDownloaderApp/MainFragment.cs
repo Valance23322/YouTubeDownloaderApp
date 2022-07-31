@@ -17,6 +17,8 @@ namespace YouTubeDownloaderApp
         public Button DownloadBtn { get; set; }
         public Spinner websiteSelectionSpinner { get; set; }
 
+        public EditText UrlInputEditText { get; set; }
+
         public Action<string, string> DownloadAction { get; set; }
 
         public override void OnCreate(Bundle savedInstanceState)
@@ -44,8 +46,8 @@ namespace YouTubeDownloaderApp
             websiteSelectionSpinner.Adapter = adapter;
 
 
-            EditText urlInput = view.FindViewById<EditText>(Resource.Id.URLBox);
-            urlInput.KeyPress += (object sender, View.KeyEventArgs keyPress) =>
+            UrlInputEditText = view.FindViewById<EditText>(Resource.Id.URLBox);
+            UrlInputEditText.KeyPress += (object sender, View.KeyEventArgs keyPress) =>
             {
                 keyPress.Handled = false;
                 if (keyPress.Event.Action == KeyEventActions.Down && keyPress.KeyCode == Keycode.Enter)
@@ -74,12 +76,14 @@ namespace YouTubeDownloaderApp
             Toast.MakeText(this.Context, toast, ToastLength.Short).Show();
         }
 
-        public virtual void ReceiveDownloadParams(string fileName, string saveFolder)
+        public virtual void ReceiveDownloadParams(string fileName, string path)
         {
-            List<string> resultList = new List<string>();
-            resultList.Add($"File Name: {fileName}");
-            resultList.Add($"Save Folder: {saveFolder}");
-            Console.WriteLine($"\n\n\n\n{string.Join("\n", resultList)}\n\n\n\n");
+            //List<string> resultList = new List<string>();
+            //resultList.Add($"File Name: {fileName}");
+            //resultList.Add($"Save Folder: {saveFolder}");
+            //Console.WriteLine($"\n\n\n\n{string.Join("\n", resultList)}\n\n\n\n");
+            string videoURL = this.UrlInputEditText.Text;
+            YouTubeDownloaderService.DownloadVideo(fileName, path, videoURL);
         }
     }
 }
