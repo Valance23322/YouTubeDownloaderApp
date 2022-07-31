@@ -15,11 +15,24 @@ using VideoLibrary;
 
 public class YouTubeDownloaderService
 {
-    public static async void DownloadVideoAsync(string fileName, string path, string videoURL)
+    public static async Task<string> DownloadVideoAsync(string fileName, string path, string videoURL)
     {
+        string errorMessage = null;
         var youTube = YouTube.Default; // starting point for YouTube actions
-        var video = youTube.GetVideo(videoURL); // gets a Video object with info about the video
-        File.WriteAllBytes($"{path}{fileName}", video.GetBytes());
+        try
+        {
+            var video = youTube.GetVideo(videoURL); // gets a Video object with info about the video
+            File.WriteAllBytes(Path.Combine(path, fileName), video.GetBytes());
+        }
+        catch(ArgumentException ex)
+        {
+            errorMessage = ex.Message;
+        }
+        catch(Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+        return errorMessage;
     }
 
     public static async void DownloadPlaylistAsync()
@@ -91,7 +104,7 @@ public class YouTubeDownloaderService
             ApplicationName = Assembly.GetExecutingAssembly().GetName().Name
         });
 
-        var video = new Video();
+        var video = new Google.Apis.YouTube.v3.Data.Video();
         video.Snippet = new VideoSnippet();
         video.Snippet.Title = "Default Video Title";
         video.Snippet.Description = "Default Video Description";
@@ -126,7 +139,7 @@ public class YouTubeDownloaderService
         }
     }
 
-    void videosInsertRequest_ResponseReceived(Video video)
+    void videosInsertRequest_ResponseReceived(Google.Apis.YouTube.v3.Data.Video video)
     {
         Console.WriteLine("Video id '{0}' was successfully uploaded.", video.Id);
     }

@@ -10566,7 +10566,13 @@ namespace YouTubeDownloaderApp
 			public const int search_menu_title = 2131755134;
 			
 			// aapt resource value: 0x7F10007F
-			public const int status_bar_notification_info_overflow = 2131755135;
+			public const int shared_preferences_key = 2131755135;
+			
+			// aapt resource value: 0x7F100080
+			public const int shared_preferences_save_folder_path = 2131755136;
+			
+			// aapt resource value: 0x7F100081
+			public const int status_bar_notification_info_overflow = 2131755137;
 			
 			static String()
 			{

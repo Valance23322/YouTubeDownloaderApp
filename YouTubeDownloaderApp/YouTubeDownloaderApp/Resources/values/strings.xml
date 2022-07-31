@@ -1,5 +1,7 @@
 <resources>
   <string name="app_name">YouTubeDownloaderApp</string>
+  <string name="shared_preferences_key">YouTubeDownloaderApp.PREFERENCE_FILE_KEY</string>
+  <string name="shared_preferences_save_folder_path">SAVE_FOLDER_PATH</string>
   <string name="action_settings">Settings</string>
   <array name="websiteSelectionOptions">
     <item>Websites</item>

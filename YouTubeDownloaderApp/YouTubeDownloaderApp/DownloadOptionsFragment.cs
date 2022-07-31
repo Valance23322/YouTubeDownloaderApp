@@ -24,6 +24,7 @@ namespace YouTubeDownloaderApp
 
         public Action<string, string> DownloadAction { get; set; }
         ActivityResultLauncher ArlStartForResult { get; set; }
+        ISharedPreferences SharedPref { get; set; }
 
         private string saveFolderPath { get; set; }
 
@@ -35,8 +36,8 @@ namespace YouTubeDownloaderApp
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            saveFolderPath = string.Empty;
             ArlStartForResult = RegisterForActivityResult(new ActivityResultContracts.StartActivityForResult(), this);
+            SharedPref = Context.GetSharedPreferences(GetString(Resource.String.shared_preferences_key), FileCreationMode.Private);
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -52,6 +53,9 @@ namespace YouTubeDownloaderApp
             ChangeFolderBtn.Click += ChangeSaveFolder;
             ContinueDownloadBtn.Click += ContinueVideoDownload;
             CancelDownloadBtn.Click += CancelVideoDownload;
+
+            saveFolderPath = SharedPref.GetString(GetString(Resource.String.shared_preferences_save_folder_path), string.Empty);
+            SaveFolderPathTxt.Text = saveFolderPath.Substring(saveFolderPath.IndexOf(":") + 1);
 
             return view;
         }
@@ -85,8 +89,8 @@ namespace YouTubeDownloaderApp
                 return;
             }
 
-            DownloadAction(FileNameTxt.Text, saveFolderPath);
             Dismiss();
+            DownloadAction($"{FileNameTxt.Text}.mp4", saveFolderPath.Substring(saveFolderPath.IndexOf(":") + 1));
         }
 
         protected virtual void CancelVideoDownload(object sender, EventArgs e)
@@ -102,9 +106,9 @@ namespace YouTubeDownloaderApp
 
                 if (result.ResultCode == (int)Result.Ok)
                 {
-                    string filePath = result.Data.Data.Path;
-                    SaveFolderPathTxt.Text = filePath.Substring(filePath.IndexOf(":") + 1);
-                    saveFolderPath = filePath;
+                    saveFolderPath = result.Data.Data.Path;
+                    SaveFolderPathTxt.Text = saveFolderPath.Substring(saveFolderPath.IndexOf(":") + 1);
+                    SharedPref.Edit().PutString(GetString(Resource.String.shared_preferences_save_folder_path), saveFolderPath).Apply();
                 }
             }
         }
