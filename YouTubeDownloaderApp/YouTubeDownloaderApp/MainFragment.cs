@@ -43,7 +43,6 @@ namespace YouTubeDownloaderApp
             adapter.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
             websiteSelectionSpinner.Adapter = adapter;
 
-            ParentFragmentManager.SetFragmentResultListener("DownloadOptions", ViewLifecycleOwner, new FragmentResultListener(OnFinishDownloadOptionsDialog));
             return view;
         }
 
