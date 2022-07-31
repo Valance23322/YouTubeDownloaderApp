@@ -43,6 +43,17 @@ namespace YouTubeDownloaderApp
             adapter.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
             websiteSelectionSpinner.Adapter = adapter;
 
+
+            EditText urlInput = view.FindViewById<EditText>(Resource.Id.URLBox);
+            urlInput.KeyPress += (object sender, View.KeyEventArgs keyPress) =>
+            {
+                keyPress.Handled = false;
+                if (keyPress.Event.Action == KeyEventActions.Down && keyPress.KeyCode == Keycode.Enter)
+                {
+                    Toast.MakeText(this.Context, "That's a URL!", ToastLength.Short).Show();
+                }
+            };
+
             return view;
         }
 
