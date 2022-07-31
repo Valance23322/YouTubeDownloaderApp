@@ -24,7 +24,7 @@ public class YouTubeDownloaderService
 
     public static async void DownloadPlaylistAsync()
     {
-        //TODO Use YouTube API -> Channels.List, part = id, then Playlists.List, channelID = ID from Channels.List return, part = snippet, id = id from playlist URL
+        //TODO Use YouTube API -> Channels.List, part = id forUsername = channel username, then Playlists.List, channelID = ID from Channels.List return, part = snippet, id = id from playlist URL
     }
 
     public virtual async Task PlayListAPIAsync()
