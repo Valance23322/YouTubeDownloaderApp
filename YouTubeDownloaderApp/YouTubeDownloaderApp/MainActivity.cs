@@ -19,11 +19,16 @@ namespace YouTubeDownloaderApp
 
         public MainFragment MainFragment { get; set; }
 
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
+
+            Spinner websiteSelection = FindViewById<Spinner>(Resource.Id.websiteSelection);
+
             base.OnCreate(savedInstanceState);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             SetContentView(Resource.Layout.MainActivity);
+
 
             FragmentContainer = FindViewById<FrameLayout>(Resource.Id.fragmentContainer);
 
