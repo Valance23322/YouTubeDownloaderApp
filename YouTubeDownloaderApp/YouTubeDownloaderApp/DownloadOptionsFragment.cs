@@ -17,6 +17,7 @@ namespace YouTubeDownloaderApp
     public class DownloadOptionsFragment : AndroidX.Fragment.App.DialogFragment, IActivityResultCallback
     {
         public Button SaveDownloadBtn { get; set; }
+        public Button SaveDownloadAudioBtn { get; set; }
         public Button CancelDownloadBtn { get; set; }
         public EditText FileNameTxt { get; set; }
 
@@ -40,10 +41,12 @@ namespace YouTubeDownloaderApp
             View view = inflater.Inflate(Resource.Layout.DownloadOptions, container, false);
 
             SaveDownloadBtn = view.FindViewById<Button>(Resource.Id.SaveDownloadBtn);
+            SaveDownloadAudioBtn = view.FindViewById<Button>(Resource.Id.SaveDownloadAudioBtn);
             CancelDownloadBtn = view.FindViewById<Button>(Resource.Id.CancelDownloadBtn);
             FileNameTxt = view.FindViewById<EditText>(Resource.Id.FileNameTxt);
 
             SaveDownloadBtn.Click += SaveVideoDownload;
+            SaveDownloadAudioBtn.Click += SaveAudioDownload;
             CancelDownloadBtn.Click += CancelVideoDownload;
 
             return view;
@@ -67,6 +70,28 @@ namespace YouTubeDownloaderApp
             Intent i = new Intent(Intent.ActionCreateDocument);
             i.AddCategory(Intent.CategoryOpenable);
             i.SetType("video/mp4");
+            i.PutExtra(Intent.ExtraTitle, FileNameTxt.Text);
+            ArlStartForResult.Launch(i);
+        }
+
+        protected virtual void SaveAudioDownload(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(FileNameTxt.Text))
+            {
+                new AlertDialog.Builder(Context)
+                    .SetTitle("Missing Fields")
+                    .SetMessage($"The Save File Name must be filled in.")
+                    .SetNegativeButton(Android.Resource.String.Ok, (EventHandler<DialogClickEventArgs>)null)
+                    .SetIcon(Android.Resource.Drawable.IcDialogAlert)
+                    .Show();
+                return;
+            }
+
+            FileNameTxt.Text = FileNameTxt.Text.EndsWith(".mp3") ? FileNameTxt.Text : $"{FileNameTxt.Text}.mp3";
+
+            Intent i = new Intent(Intent.ActionCreateDocument);
+            i.AddCategory(Intent.CategoryOpenable);
+            i.SetType("video/mp3");
             i.PutExtra(Intent.ExtraTitle, FileNameTxt.Text);
             ArlStartForResult.Launch(i);
         }

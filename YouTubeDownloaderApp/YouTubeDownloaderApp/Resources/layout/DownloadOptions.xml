@@ -48,7 +48,13 @@
         
         <Button
             android:id="@+id/SaveDownloadBtn"
-            android:text="Save Download"
+            android:text="Save as Video"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/SaveDownloadAudioBtn"
+            android:text="Save as Audio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
         
