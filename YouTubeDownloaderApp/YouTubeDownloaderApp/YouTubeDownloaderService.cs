@@ -1,5 +1,6 @@
 ﻿using Android;
 using Android.Content;
+using Android.Content.Res;
 using Android.Provider;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Download;
@@ -14,6 +15,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using VideoLibrary;
+
 
 public class YouTubeDownloaderService
 {
@@ -56,9 +58,44 @@ public class YouTubeDownloaderService
         return errorMessage;
     }
 
-    public static async void DownloadPlaylistAsync()
+    public static async Task<System.Collections.Generic.IList<Playlist>> DownloadPlaylistAsync(string playlistUrl, Context context)
     {
         //TODO Use YouTube API -> Channels.List, part = id forUsername = channel username, then Playlists.List, channelID = ID from Channels.List return, part = snippet, id = id from playlist URL
+        //https://developers.google.com/youtube/v3/docs/channels/list
+        //https://developers.google.com/youtube/v3/code_samples/dotnet
+        //present all playlists on a channel to user. let them choose to either download specific vidoes/audios or everything all at once
+
+        var youtubeService = new YouTubeService(new BaseClientService.Initializer()
+        {
+            ApiKey = context.GetString(YouTubeDownloaderApp.Resource.String.api_key),
+            ApplicationName = "My Application"
+        });
+
+        var playListItemsRequest = youtubeService.PlaylistItems.List("snippet");
+        var playlistUrlId = playlistUrl.Substring(playlistUrl.IndexOf("list=")+5);
+        if (playlistUrlId.Contains("&"))
+        {
+            playlistUrlId = playlistUrlId.Substring(0, playlistUrlId.IndexOf("&"));
+        }
+
+        playListItemsRequest.PlaylistId = playlistUrlId;
+        var playlistItems = await playListItemsRequest.ExecuteAsync();
+
+        if (playlistItems.Items.Count == 0)
+        {
+            Console.WriteLine("No playlists found");
+            return null;
+            //TODO make actual error message
+        }
+
+        string ownerChannelID = playlistItems.Items[0].Snippet.ChannelId; //get the channel owner id of a video in the playlist
+
+        var channelPlaylistsRequest = youtubeService.Playlists.List("snippet,id");
+        channelPlaylistsRequest.MaxResults = 50;
+        channelPlaylistsRequest.ChannelId= ownerChannelID;
+        var channelPlaylistsResponse = await channelPlaylistsRequest.ExecuteAsync();
+        //we have the data at this point
+        return channelPlaylistsResponse.Items;
     }
 
     public virtual async Task PlayListAPIAsync()

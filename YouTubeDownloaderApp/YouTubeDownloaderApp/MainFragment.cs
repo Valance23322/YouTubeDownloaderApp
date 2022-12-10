@@ -25,11 +25,9 @@ namespace YouTubeDownloaderApp
         public Spinner websiteSelectionSpinner { get; set; }
 
         public EditText UrlInputEditText { get; set; }
-
-        public EditText ChannelIDEditText { get; set; }
-
         public Action<string, Android.Net.Uri> DownloadAction { get; set; }
         ActivityResultLauncher ArlStartForResult { get; set; }
+        public bool VideoModeEnabled { get; set; } = true;
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -47,10 +45,10 @@ namespace YouTubeDownloaderApp
             var view = inflater.Inflate(Resource.Layout.MainFragment, container, false);
             
             DownloadBtn = view.FindViewById<Button>(Resource.Id.DownloadBtn);
-            DownloadBtn.Click += ShowDownloadOptions;
+            DownloadBtn.Click += DownloadButtonOnClick;
 
             websiteSelectionSpinner = view.FindViewById<Spinner>(Resource.Id.websiteSelection);
-            websiteSelectionSpinner.ItemSelected += new EventHandler<AdapterView.ItemSelectedEventArgs>(websiteSelected);
+            websiteSelectionSpinner.ItemSelected += new EventHandler<AdapterView.ItemSelectedEventArgs>(formatSelected);
 
             var adapter = ArrayAdapter.CreateFromResource(this.Context, Resource.Array.websiteSelectionOptions, Android.Resource.Layout.SimpleSpinnerItem);
             adapter.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
@@ -59,12 +57,29 @@ namespace YouTubeDownloaderApp
 
 
             UrlInputEditText = view.FindViewById<EditText>(Resource.Id.URLBox);
-            UrlInputEditText.SetHint(Resource.String.url_hint_text);
-
-            ChannelIDEditText = view.FindViewById<EditText>(Resource.Id.ChannelID);
-            ChannelIDEditText.SetHint(Resource.String.channel_id_hint_text);
+            UrlInputEditText.SetHint(Resource.String.video_url_hint_text);
 
             return view;
+        }
+
+        private void DownloadButtonOnClick(object sender, EventArgs e)
+        { //TODO throw toast if edittext is empty
+            if (VideoModeEnabled)
+            {
+                ShowDownloadOptions();
+
+            }
+            else
+            {
+                GetPlaylistInfoAsync();
+            }
+            
+        }
+
+        public virtual async Task GetPlaylistInfoAsync()
+        {
+            var data = await YouTubeDownloaderService.DownloadPlaylistAsync(UrlInputEditText.Text, Context);
+            Console.WriteLine(data.FirstOrDefault()?.Snippet?.Title);
         }
 
         public virtual void SetupDownloadDialogAction()
@@ -72,7 +87,7 @@ namespace YouTubeDownloaderApp
             DownloadAction = ReceiveDownloadParams;
         }
 
-        protected virtual void ShowDownloadOptions(object sender, EventArgs e)
+        protected virtual void ShowDownloadOptions()
         {
             StringBuilder missingFields = new StringBuilder();
             if (websiteSelectionSpinner.SelectedItemId == 0)
@@ -116,17 +131,19 @@ namespace YouTubeDownloaderApp
             }
         }
 
-        //this is where we would change the call to the different methods for different websites
-        public void websiteSelected (object sender, AdapterView.ItemSelectedEventArgs e)
+        //this is where we would change the call to the different methods for different formats
+        public void formatSelected (object sender, AdapterView.ItemSelectedEventArgs e)
         {
             Spinner websiteSelected = (Spinner)sender;
-            if (websiteSelectionSpinner.SelectedItem.ToString() == "YouTube")
+            if (websiteSelectionSpinner.SelectedItem.ToString() == Context.GetString(Resource.String.videos_label))
             {
-                ChannelIDEditText.Visibility = ViewStates.Visible;
+                this.UrlInputEditText.Hint = Context.GetString(Resource.String.video_url_hint_text);
+                VideoModeEnabled = true;
             }
             else
             {
-                ChannelIDEditText.Visibility = ViewStates.Invisible;
+                this.UrlInputEditText.Hint = Context.GetString(Resource.String.playlist_url_hint_text);
+                VideoModeEnabled = false;
             }
 
         }
@@ -158,7 +175,7 @@ namespace YouTubeDownloaderApp
                 Java.Util.HashMap map = p0 as Java.Util.HashMap;
                 if(map.Values().Cast<bool>().All(x => x))
                 {
-                    ShowDownloadOptions(null, null);
+                    ShowDownloadOptions();
                 }
                 else
                 {
