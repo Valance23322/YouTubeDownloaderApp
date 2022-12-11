@@ -71,16 +71,15 @@ namespace YouTubeDownloaderApp
             }
             else
             {
-                GetPlaylistInfoAsync();
+                Intent intent = new Intent(Context, typeof(PlaylistActivity));
+                intent.PutExtra(PlaylistActivity.URLParameter, UrlInputEditText.Text);
+
+                StartActivity(intent);
             }
             
         }
 
-        public virtual async Task GetPlaylistInfoAsync()
-        {
-            var data = await YouTubeDownloaderService.DownloadPlaylistAsync(UrlInputEditText.Text, Context);
-            Console.WriteLine(data.FirstOrDefault()?.Snippet?.Title);
-        }
+        
 
         public virtual void SetupDownloadDialogAction()
         {

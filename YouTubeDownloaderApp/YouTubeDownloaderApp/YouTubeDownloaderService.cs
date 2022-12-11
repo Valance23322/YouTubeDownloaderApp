@@ -90,12 +90,23 @@ public class YouTubeDownloaderService
 
         string ownerChannelID = playlistItems.Items[0].Snippet.ChannelId; //get the channel owner id of a video in the playlist
 
-        var channelPlaylistsRequest = youtubeService.Playlists.List("snippet,id");
+        var channelPlaylistsRequest = youtubeService.Playlists.List("snippet,id,contentDetails");
         channelPlaylistsRequest.MaxResults = 50;
         channelPlaylistsRequest.ChannelId= ownerChannelID;
         var channelPlaylistsResponse = await channelPlaylistsRequest.ExecuteAsync();
         //we have the data at this point
+
+        for(int i = channelPlaylistsResponse.Items.Count -1; i>=0; i--)
+        {
+            if (channelPlaylistsResponse.Items[i].ContentDetails.ItemCount == 0)
+            {
+                channelPlaylistsResponse.Items.RemoveAt(i);
+            }
+        }
         return channelPlaylistsResponse.Items;
+        //cut to new fragment and present the data
+
+
     }
 
     public virtual async Task PlayListAPIAsync()
